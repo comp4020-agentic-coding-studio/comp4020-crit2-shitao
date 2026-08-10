@@ -1,85 +1,51 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-A reading-guide to how the work came together --- a map to your process, not an
-essay about it. Markers read this file and follow its citations; they don't
-trawl the repo for evidence you didn't point at, so if a moment mattered, cite
-it.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
-
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+An unsolicited redesign of [jqlang.org](https://jqlang.org/), the homepage for
+jq (the command-line JSON processor). I like jq itself, but its homepage
+leads with a download panel and then a changelog running back to 2013 —
+useful once you already know the tool, but it never shows a first-time visitor
+what jq actually does. My version puts a worked example above the fold,
+replaces the changelog with three runnable recipes, and keeps the download,
+manual, and playground links intact so it's still a usable front door.
 
 ## The moments that mattered
 
-Three or four for an assignment; fewer is fine for a weekly prototype. Keep the
-list short so each moment has room to do all four jobs:
+1. **Grounding the critique before writing it.** I remembered jq's homepage
+   as sparse, but "sparse" isn't a defensible claim in a redesign brief —
+   a reader can just open the real site and check. I fetched jqlang.org's
+   actual layout before writing the rationale section, which is what
+   confirmed the specific, checkable claim I ended up making: no inline
+   example anywhere on the page, and the changelog dominates the vertical
+   space below the fold. That's the difference between "I think this site is
+   bad" and a critique someone can verify against the live page.
 
-1. **what happened** --- the problem, or the thing that went wrong
-2. **what you did instead of the obvious thing** --- the call you made, and why
-   it beat the obvious one
-3. **how you knew it was right** --- the check you ran, the viewport you looked
-   at, what you read before accepting the diff
-4. **the citation** --- a commit or commit range, a `CLAUDE.md` change, a check
-   that went from red to green, a prompt paired with the commit it produced
+2. **A spec test for the brief itself, not just the invariants.**
+   The template ships `spec/starter.test.ts` as a worked example and
+   `spec/invariants.test.ts` for universal contracts, but neither one checks
+   *this week's* brief — that the page links to the real organisation and
+   explains the reasoning. I deleted the starter test and wrote
+   `spec/redesign.test.ts` to assert the two mechanically-checkable parts of
+   that contract directly: a link to `jqlang.org` exists, and the
+   `#redesign` section has enough substance to actually be an explanation
+   rather than a token gesture
+   ([`61f853d`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit2-shitao/commit/61f853d)).
+   That's the check a future run (or a marker) can trust instead of my
+   say-so.
 
-Jobs 2 and 3 are the ones the repo can't tell a reader on its own, so they're
-where the marks are. The strongest moments are the ones where a correction
-landed in the **harness** --- the standards and checks your work has to satisfy
---- rather than in a retry: a rule added to `CLAUDE.md`, a check wired up, an
-attempt thrown away. Retrying until it passes is the routine case, and changing
-what the work runs against is the skilled one.
-
-Cite each moment as a link whose text is the commit hash or range and whose
-target is this repo's commit or compare URL, so a reader clicks straight to the
-evidence:
-
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
-
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
-
-> the prompt, verbatim
-
-Screenshots are welcome where one carries the verification better than a
-sentence does. Commit the file to this repo and link it with a **relative**
-path, which is what makes it render on GitHub: `![alt text](docs/before.png)`.
-Images don't count towards the word count and don't replace the citation.
-
-### A worked moment, for shape
-
-Delete this section along with the rest of the boilerplate --- it's here to show
-the four jobs in one paragraph, not to be imitated in content.
-
-> The date formatter kept coming back with `toLocaleDateString()` and no locale
-> argument, so the same build rendered differently on my machine and in CI. I'd
-> already re-prompted it twice, which fixed the line but not the habit, so the
-> third time I put the rule in `CLAUDE.md` instead
-> ([`3f9ac21`](https://github.com/YOUR-ORG/YOUR-REPO/commit/3f9ac21)) and added
-> a spec test that fails on a bare `toLocaleDateString`. That's what told me it
-> had actually taken: the test went red against the old code and green against
-> the new, and the next two features it wrote passed it without prompting
-> ([`3f9ac21...b7e0d14`](https://github.com/YOUR-ORG/YOUR-REPO/compare/3f9ac21...b7e0d14)).
+3. **Stylelint caught a real specificity trap, not a style nitpick.**
+   `no-descending-specificity` flagged `nav[aria-label="Primary"] a:first-child`
+   coming before a plain `a` rule. Reordering the CSS wouldn't have fixed it —
+   an attribute-selector compound and a class selector don't have a stable
+   order — so I added an explicit `.brand` class to the logo link instead of
+   fighting the linter with rule order. Checked by re-running `pnpm check`
+   until stylelint, oxlint, typecheck, build, and all 18 vitest tests passed
+   clean in one pass
+   ([`268f399`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit2-shitao/commit/268f399)).
 
 ## Before you ship
 
-`pnpm check:evidence` verifies your citations resolve to real commits, that the
-current reflection entry is in `reflections/`, and that your `CLAUDE.md` is
-there --- before a marker ever opens the file. It checks that your map is
-traceable, not that it is good: the marker judges whether your small,
-deliberately chosen set of moments shows real judgement and reflection. A green
-check is not a substitute for that curation.
-
-Images are deliberately not checked, because whether one renders is visible the
-moment you look. Open this file on GitHub and look at it before you ship.
+Ran under severe time pressure (provisioned late, ~35 minutes to the crit),
+so this is intentionally a small, honest redesign of one page rather than an
+unfinished multi-page site.
