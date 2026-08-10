@@ -3,22 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
+    <title>jq, redesigned — a command-line JSON processor</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header>
       <nav aria-label="Primary">
-        <a href="./">Home</a>
+        <a href="./" class="brand">jq</a>
+        <a href="#recipes">Recipes</a>
+        <a href="#redesign">About this redesign</a>
+        <a href="https://jqlang.org/">Real site ↗</a>
       </nav>
     </header>
     <main>
-      <h1>COMP4020 prototype</h1>
-      <p data-testid="intro">
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
-      </p>
+      <section class="hero">
+        <h1>jq</h1>
+        <p class="tagline">
+          Slice, filter, and reshape JSON straight from the command line — no
+          script file required.
+        </p>
+        <figure class="example" aria-label="A worked example">
+          <pre><code>$ curl -s https://api.github.com/repos/jqlang/jq | jq '.stargazers_count'
+31842</code></pre>
+        </figure>
+        <div class="cta-row">
+          <a class="button primary" href="https://jqplay.org/">Try it online</a>
+          <a class="button" href="https://jqlang.org/download/">Install jq</a>
+          <a class="button" href="https://jqlang.org/manual/">Read the manual</a>
+        </div>
+      </section>
+
+      <section class="why">
+        <h2>Why bother?</h2>
+        <p>
+          jq does for JSON what <code>sed</code> and <code>grep</code> do for
+          plain text: it lets a one-line command reach into a blob of data and
+          pull out, reshape, or filter exactly the part you need. It's a
+          single, dependency-free binary, so it drops into any pipeline —
+          shell scripts, CI logs, an API response you're poking at in a
+          terminal — without dragging in a language runtime.
+        </p>
+      </section>
+
+      <section id="recipes" class="recipes">
+        <h2>Three things you can do right now</h2>
+        <div class="recipe-grid">
+          <article class="recipe">
+            <h3>Pretty-print anything</h3>
+            <pre><code>echo '{"a":1,"b":[2,3]}' | jq .</code></pre>
+            <p>No arguments needed — bare <code>jq .</code> reformats compact
+              JSON into something a human can read.</p>
+          </article>
+          <article class="recipe">
+            <h3>Pull out one field</h3>
+            <pre><code>jq '.user.login' event.json</code></pre>
+            <p>Dot-paths walk into nested objects the same way you'd write
+              them in JavaScript, minus the semicolons.</p>
+          </article>
+          <article class="recipe">
+            <h3>Filter a list</h3>
+            <pre><code>jq '.[] | select(.stars > 100)' repos.json</code></pre>
+            <p><code>select()</code> turns an array into just the elements
+              that pass a test — the workhorse of most real one-liners.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="redesign" class="redesign">
+        <h2>About this redesign</h2>
+        <p>
+          I like jq: it's small, fast, dependency-free, and I reach for it
+          most days. But its homepage,
+          <a href="https://jqlang.org/">jqlang.org</a>, spends its first
+          screen on a download panel and its next several screens on a
+          changelog running back to 2013 — useful once you already know jq,
+          but it never shows a newcomer what the tool actually does. There's
+          no example anywhere on the page; you have to click through to the
+          tutorial or manual before seeing jq run on real input.
+        </p>
+        <p>
+          This page moves a worked example above the fold, replaces the
+          release history with three runnable recipes, and rewrites the pitch
+          in plainer language. It links back to the real site for downloads,
+          the manual, and everything else jq actually needs to ship — this is
+          a better front door, not a replacement project.
+        </p>
+      </section>
     </main>
+    <footer>
+      <p>
+        Not affiliated with the jq maintainers. Original project:
+        <a href="https://github.com/jqlang/jq">github.com/jqlang/jq</a>.
+      </p>
+    </footer>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

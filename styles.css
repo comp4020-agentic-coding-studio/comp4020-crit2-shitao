@@ -1,16 +1,146 @@
-body {
-  margin: 0;
-  padding: 2rem;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-  color: #1a1a1a;
+:root {
+  color-scheme: light;
+
+  --ink: #1a1a1a;
+  --paper: #fdfcf9;
+  --accent: #0b5fff;
+  --code-bg: #1e1e2e;
+  --code-fg: #e6e6e6;
+  --rule: #e2e0d8;
 }
 
-main {
-  max-width: 40rem;
-  margin: 0 auto;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+header {
+  border-bottom: 1px solid var(--rule);
 }
 
 a {
-  color: #0b5fff;
+  color: var(--accent);
+}
+
+nav[aria-label="Primary"] {
+  max-width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+section {
+  margin-bottom: 3rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin: 0 0 0.5rem;
+}
+
+.tagline {
+  font-size: 1.25rem;
+  max-width: 34rem;
+}
+
+pre {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+}
+
+.example {
+  margin: 1.5rem 0;
+}
+
+.cta-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.button.primary {
+  background: var(--accent);
+  color: white;
+}
+
+.button:not(.primary) {
+  color: var(--accent);
+}
+
+.recipe-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.recipe {
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.recipe h3 {
+  margin-top: 0;
+}
+
+.recipe pre {
+  font-size: 0.8rem;
+}
+
+.redesign {
+  border-top: 1px solid var(--rule);
+  padding-top: 2rem;
+}
+
+footer {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+@media (width <= 30rem) {
+  .hero h1 {
+    font-size: 2.25rem;
+  }
 }
